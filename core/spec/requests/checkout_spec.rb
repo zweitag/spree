@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "Checkout" do
   context "visitor makes checkout as guest without registration" do
+    
     context "when backordering is disabled" do
       before(:each) do
         reset_spree_preferences do |config|
