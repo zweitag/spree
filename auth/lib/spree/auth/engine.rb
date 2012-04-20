@@ -5,7 +5,7 @@ module Spree
       engine_name 'spree_auth'
 
       initializer "spree.auth.environment", :before => :load_config_initializers do |app|
-        Spree::Auth::Config = Spree::Auth::Configuration.new
+        Spree::Auth::Config = Spree::AuthConfiguration.new
       end
 
       def self.activate
