@@ -42,6 +42,28 @@ module Spree
       template "rails/application.rb", "#{dummy_path}/config/application.rb", :force => true
       template "rails/routes.rb", "#{dummy_path}/config/routes.rb", :force => true
       template "rails/script/rails", "#{dummy_path}/spec/dummy/script/rails", :force => true
+
+    end
+
+    def setup_auth
+      if defined?(Spree::Auth)
+        puts "Setting up authentication..."
+        template "auth/initializers/spree_auth.rb", "#{dummy_path}/config/initializers/spree_auth.rb", :force => true
+
+        require 'generators/devise/install_generator'
+        require 'generators/devise/devise_generator'
+
+        inside dummy_path do
+          invoke Devise::Generators::InstallGenerator
+
+          # TODO: Investigate why ORM is not being set"
+          gsub_file 'config/initializers/devise.rb', /require 'devise\/orm\/'/, "require 'devise/orm/active_record'"
+
+          # TODO: Investigate why you cannot simply invoke the generator like this:
+          # invoke Devise::Generators::DeviseGenerator, ['User --orm active_record']
+          `rails g devise user --orm active_record`
+        end
+      end
     end
 
     def test_dummy_clean
@@ -65,6 +87,7 @@ module Spree
     attr :database
 
     protected
+
     def dummy_path
       ENV['DUMMY_PATH'] || 'spec/dummy'
     end
@@ -75,7 +98,6 @@ module Spree
 
     def application_definition
       @application_definition ||= begin
-
         dummy_application_path = File.expand_path("#{dummy_path}/config/application.rb", destination_root)
         unless options[:pretend] || !File.exists?(dummy_application_path)
           contents = File.read(dummy_application_path)
