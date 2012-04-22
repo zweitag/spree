@@ -5,6 +5,7 @@ end
 desc "Generates a dummy app for testing"
 namespace :common do
   task :test_app do
+    Bundler.require
     require "#{ENV['LIB_NAME']}"
 
     Spree::DummyGenerator.start ["--lib_name=#{ENV['LIB_NAME']}", "--database=#{ENV['DB_NAME']}", "--quiet"]
