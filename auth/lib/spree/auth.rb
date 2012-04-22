@@ -22,4 +22,5 @@ module Spree
   end
 end
 
+require 'spree/auth/user_extensions'
 require 'spree/auth/engine'

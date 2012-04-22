@@ -8,13 +8,14 @@ module Spree
         Spree::Auth::Config = Spree::AuthConfiguration.new
       end
 
-      def self.activate
+      config.to_prepare do
         Dir.glob(File.join(File.dirname(__FILE__), "../../../app/**/*_decorator*.rb")) do |c|
           Rails.configuration.cache_classes ? require(c) : load(c)
         end
+
+        Spree::Auth.user_class.include Spree::Auth::UserExtensions
       end
 
-      config.to_prepare &method(:activate).to_proc
       ActiveRecord::Base.class_eval { include Spree::TokenResource }
     end
   end
