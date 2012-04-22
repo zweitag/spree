@@ -13,7 +13,9 @@ module Spree
           Rails.configuration.cache_classes ? require(c) : load(c)
         end
 
-        Spree::Auth.user_class.send :include, Spree::Auth::UserExtensions
+        if Spree::Auth.user_class
+          Spree::Auth.user_class.send :include, Spree::Auth::UserExtensions
+        end
       end
 
       ActiveRecord::Base.class_eval { include Spree::TokenResource }
