@@ -1,6 +1,4 @@
 Spree::BaseController.class_eval do
-  before_filter :set_current_user
-
   # graceful error handling for cancan authorization exceptions
   rescue_from CanCan::AccessDenied do |exception|
     return unauthorized
@@ -41,9 +39,5 @@ Spree::BaseController.class_eval do
       unless disallowed_urls.include?(request.fullpath)
         session['user_return_to'] = request.fullpath.gsub('//', '/')
       end
-    end
-
-    def set_current_user
-      Spree::User.current = current_user
     end
 end
