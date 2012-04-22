@@ -3,7 +3,7 @@ class BarAbility
   include CanCan::Ability
 
   def initialize(user)
-    user ||= Spree::User.new
+    user ||= Spree::Auth.user_class.new
     if user.has_role? 'bar'
       # allow dispatch to :index and :show orders on the admin
       can :index, Spree::Order
