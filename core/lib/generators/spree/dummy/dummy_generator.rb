@@ -47,11 +47,8 @@ module Spree
 
     def setup_auth
       if defined?(Spree::Auth)
-        puts "Setting up authentication..."
-        template "auth/initializers/spree_auth.rb", "#{dummy_path}/config/initializers/spree_auth.rb", :force => true
-
+        puts "Setting up Devise for authentication..."
         require 'generators/devise/install_generator'
-        require 'generators/devise/devise_generator'
 
         inside dummy_path do
           invoke Devise::Generators::InstallGenerator
@@ -61,8 +58,11 @@ module Spree
 
           # TODO: Investigate why you cannot simply invoke the generator like this:
           # invoke Devise::Generators::DeviseGenerator, ['User --orm active_record']
+          puts "Generating User class..."
           `rails g devise user --orm active_record`
         end
+
+        template "auth/initializers/spree_auth.rb", "#{dummy_path}/config/initializers/spree_auth.rb", :force => true
       end
     end
 

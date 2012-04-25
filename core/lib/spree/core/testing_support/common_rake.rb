@@ -8,11 +8,11 @@ namespace :common do
     Bundler.require
     require "#{ENV['LIB_NAME']}"
 
-    Spree::DummyGenerator.start ["--lib_name=#{ENV['LIB_NAME']}", "--database=#{ENV['DB_NAME']}", "--quiet"]
+    Spree::DummyGenerator.start ["--lib_name=#{ENV['LIB_NAME']}", "--database=#{ENV['DB_NAME']}"]
     Spree::InstallGenerator.start ["--lib_name=#{ENV['LIB_NAME']}", "--auto-accept", "--migrate=false", "--seed=false", "--sample=false", "--quiet"]
 
     puts "Setting up dummy database..."
-    cmd = "bundle exec rake db:drop db:create db:migrate db:test:prepare"
+    cmd = "bundle exec rake db:drop db:create db:migrate db:test:prepare --trace"
 
     if RUBY_PLATFORM =~ /mswin/ #windows
       cmd += " >nul"
