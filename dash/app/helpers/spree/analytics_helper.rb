@@ -35,14 +35,14 @@ module Spree
     end
 
     def cart_analytics_tags
-      return {} unless @order and @order.cart?
+      return {} unless @order && @order.cart?
       { :cart => { :total => @order.total,
                    :products => products_for_order }
       }
     end
 
     def completed_analytics_tags
-      return {} unless flash[:commerce_tracking] and @order and @order.complete?
+      return {} unless flash[:commerce_tracking] && @order && @order.complete?
       { :confirm => { :orderid => @order.number,
                       :total => @order.total,
                       :shipping => @order.ship_total,

@@ -80,6 +80,7 @@ module Spree
       it "for completed order" do
         @order.should_receive(:complete?).and_return(true)
         assign :order, @order
+        flash[:commerce_tracking] = true
         helper.should_receive(:products_for_order).and_return([{:name => "product1"}])
         tags = helper.completed_analytics_tags
         tags[:confirm][:orderid].should eq "R12345"
