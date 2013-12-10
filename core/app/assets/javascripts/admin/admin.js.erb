@@ -212,6 +212,16 @@ $(document).ready(function(){
 
   $('.add_fields').click(function() {
     var target = $(this).data("target");
+    var last_table_row = $(target + 'tr:visible:last');
+    var sequences = Array.prototype.map.call($('.sequence-number'), function(row) {
+      return parseInt(row.getAttribute('value'));
+    });
+    sequences.shift();
+    if (sequences.length == 0) {
+      sequences = [0]
+    }
+    var new_sequence_number = Math.max.apply(null, sequences) + 1;
+
     var new_table_row = $(target + ' tr:visible:last').clone();
     var new_id = new Date().getTime();
     new_table_row.find("input").each(function () {
@@ -220,6 +230,7 @@ $(document).ready(function(){
       el.attr("id", el.attr("id").replace(/\d+/, new_id))
       el.attr("name", el.attr("name").replace(/\d+/, new_id))
     })
+    $('input.sequence-number', new_table_row).val(new_sequence_number)
     $(target).append(new_table_row);
   })
 
